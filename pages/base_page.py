@@ -26,3 +26,8 @@ class BasePage:
     @allure.step("Получение активного элемента")
     def get_active_element(self):
         return self.driver.switch_to.active_element
+
+    @allure.step("Получение текущего URL")
+    def get_current_url(self):
+        return self.driver.current_url
+

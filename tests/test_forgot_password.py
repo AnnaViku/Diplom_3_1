@@ -1,31 +1,23 @@
 import allure
-import pytest
-from data.credentials import BASE_URL, TEST_EMAIL
-from pages.login_page import LoginPage
-from pages.forgot_password_page import ForgotPasswordPage
+from selenium.webdriver.common.by import By
+from .base_page import BasePage
 
-@allure.suite("Восстановление пароля")
-@pytest.mark.usefixtures("driver")
-class TestForgotPassword:
+class ForgotPasswordPage(BasePage):
+    EMAIL_INPUT = (By.NAME, "name")  # Или другой актуальный селектор
+    SUBMIT_BUTTON = (By.XPATH, "//button[text()='Восстановить']")
+    PASSWORD_TOGGLE = (By.CLASS_NAME, "input__icon")  # Иконка показать/скрыть
+    SUCCESS_MESSAGE = (By.CLASS_NAME, "forgot-password__success")  # Подтверждение (уточни селектор)
 
-    @allure.title("Переход на страницу восстановления пароля")
-    def test_forgot_password_navigation(self, driver):
-        login = LoginPage(driver)
-        login.open(f"{BASE_URL}/login")
-        login.go_to_forgot_password()
-        assert "forgot-password" in driver.current_url
+    @allure.step("Ввести email и нажать кнопку восстановления")
+    def restore_password(self, email):
+        self.fill(self.EMAIL_INPUT, email)
+        self.click(self.SUBMIT_BUTTON)
 
-    @allure.title("Ввод почты и клик по кнопке «Восстановить»")
-    def test_forgot_password_submit(self, driver):
-        forgot = ForgotPasswordPage(driver)
-        forgot.open(f"{BASE_URL}/forgot-password")
-        forgot.restore_password(TEST_EMAIL)
-        # Можно добавить проверку сообщения или перехода
+    @allure.step("Нажать на кнопку показать/скрыть пароль")
+    def toggle_password_visibility(self):
+        self.click(self.PASSWORD_TOGGLE)
 
-    @allure.title("Кнопка показать/скрыть пароль активирует поле")
-    def test_password_field_becomes_active(self, driver):
-        forgot = ForgotPasswordPage(driver)
-        forgot.open(f"{BASE_URL}/forgot-password")
-        forgot.toggle_password_visibility()
-        active = forgot.get_active_element()
-        assert active == forgot.get_element(ForgotPasswordPage.EMAIL_INPUT)
+    @allure.step("Получить текст сообщения об успешной отправке письма")
+    def get_success_message_text(self):
+        return self.get_element(self.SUCCESS_MESSAGE).text
+
