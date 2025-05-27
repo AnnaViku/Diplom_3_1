@@ -11,7 +11,7 @@ __pycache__/
 allure-results/
 allure-report/
 
-# Selenium screenshots (если сохраняешь)
+# Selenium
 screenshots/
 
 # pytest cache
