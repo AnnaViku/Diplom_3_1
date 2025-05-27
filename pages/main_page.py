@@ -1,15 +1,20 @@
+import allure
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
+from pages.base_page import BasePage
 
 class MainPage(BasePage):
-    CONSTRUCTOR_BUTTON = (By.LINK_TEXT, "Конструктор")
-    ORDER_FEED_BUTTON = (By.LINK_TEXT, "Лента заказов")
-    INGREDIENT = (By.CLASS_NAME, "burger-ingredient")
-    INGREDIENT_COUNTER = (By.CLASS_NAME, "counter")
-    POPUP_CLOSE = (By.CLASS_NAME, "Modal_close__3CGYF")
+    PROFILE_ICON = (By.CLASS_NAME, "AppHeader_header__link__3D_hX")  # иконка профиля
+    LOGIN_BUTTON = (By.XPATH, "//button[text()='Войти в аккаунт']")
+    ORDER_BUTTON = (By.XPATH, "//button[text()='Оформить заказ']")
 
-    def open_ingredient_details(self):
-        self.click(self.INGREDIENT)
+    @allure.step("Проверка, авторизован ли пользователь (иконка профиля)")
+    def is_user_logged_in(self):
+        return self.is_visible(self.PROFILE_ICON)
 
-    def close_popup(self):
-        self.click(self.POPUP_CLOSE)
+    @allure.step("Переход к авторизации через кнопку")
+    def go_to_login(self):
+        self.click(self.LOGIN_BUTTON)
+
+    @allure.step("Нажатие кнопки 'Оформить заказ'")
+    def click_order_button(self):
+        self.click(self.ORDER_BUTTON)

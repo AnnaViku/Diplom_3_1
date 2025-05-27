@@ -1,9 +1,19 @@
+import allure
 from selenium.webdriver.common.by import By
-from .base_page import BasePage
-
+from pages.base_page import BasePage
 
 class LoginPage(BasePage):
-    FORGOT_PASSWORD_LINK = (By.LINK_TEXT, "Восстановить пароль")
+    EMAIL_INPUT = (By.NAME, "name")
+    PASSWORD_INPUT = (By.NAME, "Пароль")
+    SUBMIT_BUTTON = (By.XPATH, "//button[text()='Войти']")
+    ERROR_MESSAGE = (By.XPATH, "//p[contains(text(),'Некорректный email или пароль')]")
 
-    def go_to_forgot_password(self):
-        self.click(self.FORGOT_PASSWORD_LINK)
+    @allure.step("Ввод email: {email} и пароля, отправка формы")
+    def login(self, email, password):
+        self.send_keys(self.EMAIL_INPUT, email)
+        self.send_keys(self.PASSWORD_INPUT, password)
+        self.click(self.SUBMIT_BUTTON)
+
+    @allure.step("Проверка наличия ошибки авторизации")
+    def is_login_error_displayed(self):
+        return self.is_visible(self.ERROR_MESSAGE)
