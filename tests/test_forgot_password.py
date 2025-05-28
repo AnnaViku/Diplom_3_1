@@ -20,7 +20,6 @@ class TestForgotPassword:
         forgot = ForgotPasswordPage(driver)
         forgot.open(f"{BASE_URL}/forgot-password")
         forgot.restore_password(TEST_EMAIL)
-        # Можно добавить проверку сообщения или перехода
 
     @allure.title("Кнопка показать/скрыть пароль активирует поле")
     def test_password_field_becomes_active(self, driver):
