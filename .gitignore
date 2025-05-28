@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.log
+
+# IDEs
+.idea/
+.vscode/
+
+# Allure
+allure-results/
+allure-report/
+
+# Selenium
+screenshots/
+
+# pytest cache
+.pytest_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
